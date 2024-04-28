@@ -18,21 +18,12 @@ class AgentArchetype(ABC):
     bias_1_initial = 0  # 初期 b_1
     bias_2_initial = 0 # 初期 b_2
     possible_actions = ("Cooperate", "Defect")
-    # 行動決定用 Q テーブル
-    Q_1 = {
-        ("Cooperate", "Cooperate"): 0.,
-        ("Cooperate", "Defect"): 0.,
-        ("Defect", "Cooperate"): 0.,
-        ("Defect", "Defect"): 0.,
-    }
     
-    # lamda_1~2とbias_1~2の学習用Qテーブル
-    Q_2 = {
+    Q_initial = {
         ("Cooperate", "Cooperate"): 0.,
         ("Cooperate", "Defect"): 0.,
         ("Defect", "Cooperate"): 0.,
         ("Defect", "Defect"): 0.,
-    } 
     
     #self.trustとself.estimated_trustを元に相手の判断を推定する。
     @abstractmethod
@@ -56,8 +47,8 @@ class Agent(AgentArchetype):
         self.estimated_trust: float = estimated_trust
         self.alpha: float = super().alpha
         self.gamma: float = super().gamma
-        self.Q_1: Dict[Tuple[str, str], float] = super().Q_1.copy()
-        self.Q_2: Dict[Tuple[str, str], float] = super().Q_2.copy()
+        self.Q_1: Dict[Tuple[str, str], float] = super().Q_initial.copy() # 行動決定用 Q テーブル
+        self.Q_2: Dict[Tuple[str, str], float] = super().Q_initial.copy() # lamda_1~2とbias_1~2の学習用Qテーブル
         self.lambda_1: float = super().lambda_1_initial
         self.lambda_2: float = super().lambda_2_initial
         self.bias_1: float = super().bias_1_initial
